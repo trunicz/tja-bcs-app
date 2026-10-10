@@ -20,13 +20,11 @@
     "@types/react-dom": "^19.3.0",
     "astro": "^7.3.8",
     "lucide-react": "^1.53.0",
+    "@types/node": "^26.6.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "recharts": "^3.10.1",
-    "tailwindcss": "^4.3.3"
-  },
-  "devDependencies": {
-    "@types/node": "^26.6.5",
+    "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   }
 }
