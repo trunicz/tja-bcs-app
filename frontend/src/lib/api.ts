@@ -13,9 +13,19 @@
 
 import { getToken, clearSession } from './auth';
 
-function normalizeBaseUrl(url?: string): string {
-  if (!url) return 'http://localhost:3001';
-  const trimmed = url.trim().replace(/\/+$/, '');
+function getClientOrServerBaseUrl(): string {
+  // In the browser, always use relative URLs so all requests route through the Astro server proxy seamlessly
+  if (typeof window !== 'undefined') {
+    return '';
+  }
+  // In server-side SSR, resolve backend target
+  const envUrl =
+    (typeof process !== 'undefined' &&
+      (process.env?.PUBLIC_API_URL || process.env?.API_URL || process.env?.BACKEND_URL)) ||
+    import.meta.env?.PUBLIC_API_URL ||
+    'http://localhost:3001';
+
+  const trimmed = envUrl.trim().replace(/\/+$/, '');
   if (/^https?:\/\//i.test(trimmed)) {
     return trimmed;
   }
@@ -25,13 +35,8 @@ function normalizeBaseUrl(url?: string): string {
   return `https://${trimmed}`;
 }
 
-const rawBaseUrl =
-  import.meta.env?.PUBLIC_API_URL ||
-  (typeof process !== 'undefined' && (process.env?.API_URL || process.env?.PUBLIC_API_URL)) ||
-  'http://localhost:3001';
-
 // Backend Base URL configuration
-export const API_BASE_URL = normalizeBaseUrl(rawBaseUrl);
+export const API_BASE_URL = getClientOrServerBaseUrl();
 
 /**
  * Custom error class capturing HTTP status code and server error payload
