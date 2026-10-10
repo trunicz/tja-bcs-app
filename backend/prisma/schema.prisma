@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Expediente {
+  id                    Int       @id @default(autoincrement())
+  folio                 String    @unique
+  consecutivo           Int
+  anio                  Int
+  fechaIngreso          DateTime
+  
+  tipoAsuntoId          Int
+  tipoAsunto            TipoAsunto @relation(fields: [tipoAsuntoId], references: [id])
+  leyId                 Int
+  ley                   Ley        @relation(fields: [leyId], references: [id])
+  salaId                Int
+  sala                  Sala       @relation(fields: [salaId], references: [id])
+  
+  estatusId             Int
+  estatus               Estatus    @relation(fields: [estatusId], references: [id])
+  subEstatusId          Int
+  subEstatus            SubEstatus @relation(fields: [subEstatusId], references: [id])
+  
+  fechaUltimoMovimiento DateTime   @default(now())
+  notas                 String?
+
+  recursos              Recurso[]
+  bitacora              MovimientoEstatus[]
+  audiencias            Audiencia[]
+  notificaciones        Notificacion[]
+}
+
+model Sala {
+  id          Int          @id @default(autoincrement())
+  nombre      String       @unique
+  expedientes Expediente[]
+  usuarios    Usuario[]
+  audiencias  Audiencia[]
+}
+
+model Estatus {
+  id          Int          @id @default(autoincrement())
+  codigo      String       @unique
+  nombre      String
+  subEstatus  SubEstatus[]
+  expedientes Expediente[]
+}
+
+model SubEstatus {
+  id          Int          @id @default(autoincrement())
+  codigo      Int
+  nombre      String       
+  responsable String?
+  estatusId   Int
+  estatus     Estatus      @relation(fields: [estatusId], references: [id])
+  expedientes Expediente[]
+}
+
+model MovimientoEstatus {
+  id                   Int        @id @default(autoincrement())
+  fecha                DateTime   @default(now())
+  
+  expedienteId         Int
+  expediente           Expediente @relation(fields: [expedienteId], references: [id])
+  
+  estatusAnteriorId    Int?
+  subEstatusAnteriorId Int?
+  
+  estatusNuevoId       Int
+  subEstatusNuevoId    Int
+  
+  usuarioId            Int
+  usuario              Usuario    @relation(fields: [usuarioId], references: [id])
+  notas                String?
+}
+
+model Recurso {
+  id             Int        @id @default(autoincrement())
+  tipo           String
+  fecha          DateTime
+  estatus        String
+  expedienteId   Int
+  expediente     Expediente @relation(fields: [expedienteId], references: [id])
+}
+
+model Usuario {
+  id                   Int                 @id @default(autoincrement())
+  nombre               String
+  correo               String              @unique
+  password             String
+  activo               Boolean             @default(true)
+  colorEmpleado        String              @default("#2563eb")
+  rolId                Int
+  rol                  Rol                 @relation(fields: [rolId], references: [id])
+  salaId               Int?
+  sala                 Sala?               @relation(fields: [salaId], references: [id])
+  movimientos          MovimientoEstatus[]
+  sessions             Session[]           @relation("UsuarioSessions")
+  impersonatedSessions Session[]           @relation("AdminSessions")
+  preferencias         PreferenciaUsuario?
+  audiencias           Audiencia[]
+  notificaciones       Notificacion[]
+}
+
+model Rol {
+  id       Int          @id @default(autoincrement())
+  nombre   String       @unique
+  usuarios Usuario[]
+  permisos RolPermiso[]
+}
+
+model Permiso {
+  id          Int          @id @default(autoincrement())
+  codigo      String       @unique
+  nombre      String
+  descripcion String?
+  modulo      String
+  roles       RolPermiso[]
+}
+
+model RolPermiso {
+  id        Int     @id @default(autoincrement())
+  rolId     Int
+  rol       Rol     @relation(fields: [rolId], references: [id], onDelete: Cascade)
+  permisoId Int
+  permiso   Permiso @relation(fields: [permisoId], references: [id], onDelete: Cascade)
+
+  @@unique([rolId, permisoId])
+}
+
+model Session {
+  id              Int       @id @default(autoincrement())
+  token           String    @unique
+  usuarioId       Int
+  usuario         Usuario   @relation("UsuarioSessions", fields: [usuarioId], references: [id], onDelete: Cascade)
+  isImpersonated  Boolean   @default(false)
+  originalAdminId Int?
+  originalAdmin   Usuario?  @relation("AdminSessions", fields: [originalAdminId], references: [id], onDelete: SetNull)
+  createdAt       DateTime  @default(now())
+  expiresAt       DateTime?
+}
+
+model TipoAsunto {
+  id          Int          @id @default(autoincrement())
+  nombre      String       @unique
+  expedientes Expediente[]
+}
+
+model Ley {
+  id          Int          @id @default(autoincrement())
+  nombre      String       @unique
+  expedientes Expediente[]
+}
+
+model PreferenciaUsuario {
+  id                     Int      @id @default(autoincrement())
+  usuarioId              Int      @unique
+  usuario                Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  tema                   String   @default("auto")
+  colorAcento            String   @default("#2563eb")
+  paletaPreset           String   @default("azul-clasico")
+  densidad               String   @default("comfortable")
+  tamanoFuente           String   @default("normal")
+  sidebarColapsado       Boolean  @default(false)
+  sidebarPosicion        String   @default("left")
+  ordenWidgets           String   @default("[\"metricas\",\"graficas\",\"audiencias\",\"actividad\",\"expedientes\"]")
+  animacionesHabilitadas Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model Audiencia {
+  id           Int        @id @default(autoincrement())
+  expedienteId Int
+  expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+  usuarioId    Int?
+  usuario      Usuario?   @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  salaId       Int?
+  sala         Sala?      @relation(fields: [salaId], references: [id], onDelete: SetNull)
+  fecha        DateTime
+  tipo         String
+  descripcion  String?
+  estado       String     @default("programada")
+  createdAt    DateTime   @default(now())
+}
+
+model Notificacion {
+  id           Int         @id @default(autoincrement())
+  usuarioId    Int
+  usuario      Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  expedienteId Int?
+  expediente   Expediente? @relation(fields: [expedienteId], references: [id], onDelete: SetNull)
+  titulo       String
+  mensaje      String
+  tipo         String      @default("info")
+  leida        Boolean     @default(false)
+  fecha        DateTime    @default(now())
+}
+

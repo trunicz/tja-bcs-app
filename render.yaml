@@ -1,0 +1,37 @@
+services:
+  # Backend API Web Service (Express + Prisma SQLite)
+  - type: web
+    name: tja-bcs-backend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma db push && npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+
+  # Frontend Web Service (Astro 5 SSR Node Standalone)
+  - type: web
+    name: tja-bcs-frontend
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: PUBLIC_API_URL
+        fromService:
+          type: web
+          name: tja-bcs-backend
+          property: host

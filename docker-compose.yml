@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tja_bcs_backend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+    volumes:
+      - tja_db_data:/app/prisma
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tja_bcs_frontend
+    restart: unless-stopped
+    ports:
+      - "4321:4321"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4321
+      - PUBLIC_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+
+volumes:
+  tja_db_data:
