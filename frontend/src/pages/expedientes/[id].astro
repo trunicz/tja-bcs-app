@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ExpedienteDetail from '../../components/ExpedienteDetail.tsx';
+
+const { id } = Astro.params;
+---
+
+<Layout title="Detalle Expediente - TJA BCS">
+  <div class="mb-6">
+    <a href="/expedientes" class="text-blue-600 dark:text-blue-300 hover:underline">← Volver a expedientes</a>
+  </div>
+  
+  <ExpedienteDetail client:load expedienteId={id} />
+</Layout>

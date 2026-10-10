@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DashboardWidgets from '../components/dashboard/DashboardWidgets.tsx';
+---
+
+<Layout title="Dashboard - TJA BCS">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">Panel de Control</h1>
+    <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm">Visión general del sistema de control de expedientes.</p>
+  </div>
+  
+  <DashboardWidgets client:load />
+</Layout>

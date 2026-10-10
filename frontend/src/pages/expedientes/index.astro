@@ -1,0 +1,12 @@
+---
+/**
+ * frontend/src/pages/expedientes/index.astro
+ * TJA BCS - Expedientes Multi-View Management
+ */
+import Layout from '../../layouts/Layout.astro';
+import ExpedientesViewContainer from '../../components/expedientes/ExpedientesViewContainer.tsx';
+---
+
+<Layout title="Expedientes Judiciales - TJA BCS">
+  <ExpedientesViewContainer client:load />
+</Layout>

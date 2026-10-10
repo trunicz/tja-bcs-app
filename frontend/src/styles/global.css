@@ -1,0 +1,849 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   TAILWIND v4 CONFIGURATION & CUSTOM VARIANTS
+   ========================================================================== */
+
+/* Dark mode variant: matches data-theme="dark" attribute OR .dark class on html or any ancestor */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
+/* Tailwind v4 Theme Tokens Mapping */
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-light: var(--color-accent-light);
+  --color-accent-lighter: var(--color-accent-lighter);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar-bg);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+
+  /* Motion & Entrance Animations */
+  --animate-fade-in: fadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scaleIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-slide-down: slideInDown 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-slide-up: slideInUp 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ==========================================================================
+   1. ROOT & LIGHT THEME DESIGN TOKENS
+   ========================================================================== */
+
+:root,
+html[data-theme="light"] {
+  /* System Surfaces */
+  --background: #f8fafc;           /* slate-50 */
+  --foreground: #0f172a;           /* slate-900 */
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --card-border: #e2e8f0;          /* slate-200 */
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --popover-border: #e2e8f0;
+
+  /* Primary Brand (TJA BCS Navy / Judicial Blue) */
+  --primary: #1e3a8a;              /* blue-900 */
+  --primary-hover: #1d4ed8;        /* blue-700 */
+  --primary-light: #eff6ff;        /* blue-50 */
+  --primary-foreground: #ffffff;
+
+  /* Secondary & Muted */
+  --secondary: #f1f5f9;            /* slate-100 */
+  --secondary-foreground: #334155; /* slate-700 */
+  --muted: #f1f5f9;                /* slate-100 */
+  --muted-foreground: #64748b;     /* slate-500 */
+
+  /* Borders & Inputs */
+  --border: #e2e8f0;               /* slate-200 */
+  --border-subtle: #f8fafc;
+  --input: #ffffff;
+  --input-border: #cbd5e1;         /* slate-300 */
+  --input-focus: #2563eb;          /* blue-600 */
+  --ring: #2563eb;
+  --ring-offset: #ffffff;
+
+  /* Sidebar Tokens (Light Theme Shell) */
+  --sidebar-bg: #0f172a;           /* slate-900 */
+  --sidebar-header: #020617;       /* slate-950 */
+  --sidebar-foreground: #f8fafc;
+  --sidebar-muted: #94a3b8;        /* slate-400 */
+  --sidebar-border: #1e293b;       /* slate-800 */
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-hover: #334155;
+  --sidebar-active-bg: rgba(37, 99, 235, 0.2);
+  --sidebar-active-text: #60a5fa;
+
+  /* Header Tokens */
+  --header-bg: #ffffff;
+  --header-border: #e2e8f0;
+  --header-foreground: #0f172a;
+
+  /* Judicial Status Badges (Light) */
+  --status-tramite-bg: #eff6ff;
+  --status-tramite-text: #1d4ed8;
+  --status-tramite-border: #bfdbfe;
+
+  --status-proyecto-bg: #fefce8;
+  --status-proyecto-text: #a16207;
+  --status-proyecto-border: #fef08a;
+
+  --status-concluido-bg: #f0fdf4;
+  --status-concluido-text: #15803d;
+  --status-concluido-border: #bbf7d0;
+
+  --status-archivo-bg: #f8fafc;
+  --status-archivo-text: #475569;
+  --status-archivo-border: #cbd5e1;
+
+  /* Default Accent (azul-clasico) */
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-light: #eff6ff;
+  --color-accent-lighter: #dbeafe;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(37, 99, 235, 0.35);
+
+  /* Density Default: Comfortable */
+  --density-table-py: 0.875rem;    /* 14px */
+  --density-table-px: 1.25rem;     /* 20px */
+  --density-card-p: 1.5rem;        /* 24px */
+  --density-btn-py: 0.625rem;      /* 10px */
+  --density-btn-px: 1.125rem;      /* 18px */
+  --density-input-py: 0.625rem;    /* 10px */
+  --density-input-px: 0.875rem;    /* 14px */
+  --density-nav-py: 0.625rem;      /* 10px */
+  --density-nav-px: 0.75rem;       /* 12px */
+  --density-gap: 1.25rem;          /* 20px */
+  --density-row-h: 3.75rem;        /* 60px */
+
+  /* Font Scale: Normal (16px base) */
+  --font-scale-base: 1rem;
+}
+
+/* System Dark Mode Fallback (when tema="auto" and OS is dark) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: #090d16;
+    --foreground: #f1f5f9;
+    --card: #111827;
+    --card-foreground: #f8fafc;
+    --card-border: #1f2937;
+    --popover: #111827;
+    --popover-foreground: #f8fafc;
+    --popover-border: #374151;
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-light: rgba(59, 130, 246, 0.15);
+    --primary-foreground: #ffffff;
+    --secondary: #1e293b;
+    --secondary-foreground: #cbd5e1;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --border: #1f2937;
+    --border-subtle: #111827;
+    --input: #111827;
+    --input-border: #374151;
+    --input-focus: #60a5fa;
+    --ring: #3b82f6;
+    --ring-offset: #090d16;
+    --sidebar-bg: #070b12;
+    --sidebar-header: #030712;
+    --sidebar-foreground: #f8fafc;
+    --sidebar-muted: #94a3b8;
+    --sidebar-border: #1f2937;
+    --sidebar-accent: #111827;
+    --sidebar-accent-hover: #1f2937;
+    --sidebar-active-bg: rgba(59, 130, 246, 0.25);
+    --sidebar-active-text: #93c5fd;
+    --header-bg: #0b0f19;
+    --header-border: #1f2937;
+    --header-foreground: #f8fafc;
+    --status-tramite-bg: rgba(30, 64, 175, 0.25);
+    --status-tramite-text: #93c5fd;
+    --status-tramite-border: rgba(59, 130, 246, 0.35);
+    --status-proyecto-bg: rgba(161, 98, 7, 0.25);
+    --status-proyecto-text: #fde047;
+    --status-proyecto-border: rgba(234, 179, 8, 0.35);
+    --status-concluido-bg: rgba(21, 128, 61, 0.25);
+    --status-concluido-text: #86efac;
+    --status-concluido-border: rgba(34, 197, 94, 0.35);
+    --status-archivo-bg: rgba(71, 85, 105, 0.25);
+    --status-archivo-text: #cbd5e1;
+    --status-archivo-border: rgba(100, 116, 139, 0.35);
+    --color-accent-light: rgba(37, 99, 235, 0.2);
+    --color-accent-lighter: rgba(37, 99, 235, 0.3);
+    --color-accent-ring: rgba(96, 165, 250, 0.4);
+  }
+}
+
+/* ==========================================================================
+   2. DARK THEME TOKENS (Explicit html[data-theme="dark"] & html.dark)
+   ========================================================================== */
+
+html[data-theme="dark"],
+html.dark {
+  /* System Surfaces */
+  --background: #090d16;           /* Deep obsidian */
+  --foreground: #f1f5f9;           /* slate-100 */
+
+  --card: #111827;                 /* gray-900 / dark slate */
+  --card-foreground: #f8fafc;      /* slate-50 */
+  --card-border: #1f2937;          /* gray-800 */
+
+  --popover: #111827;
+  --popover-foreground: #f8fafc;
+  --popover-border: #374151;       /* gray-700 */
+
+  /* Primary Brand (High contrast for dark) */
+  --primary: #3b82f6;              /* blue-500 */
+  --primary-hover: #60a5fa;        /* blue-400 */
+  --primary-light: rgba(59, 130, 246, 0.15);
+  --primary-foreground: #ffffff;
+
+  /* Secondary & Muted */
+  --secondary: #1e293b;            /* slate-800 */
+  --secondary-foreground: #cbd5e1; /* slate-300 */
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;     /* slate-400 */
+
+  /* Borders & Inputs */
+  --border: #1f2937;               /* gray-800 */
+  --border-subtle: #111827;
+  --input: #111827;
+  --input-border: #374151;         /* gray-700 */
+  --input-focus: #60a5fa;          /* blue-400 */
+  --ring: #3b82f6;
+  --ring-offset: #090d16;
+
+  /* Sidebar Tokens (Dark Mode Shell) */
+  --sidebar-bg: #070b12;           /* Deep obsidian sidebar */
+  --sidebar-header: #030712;       /* Near black header */
+  --sidebar-foreground: #f8fafc;
+  --sidebar-muted: #94a3b8;
+  --sidebar-border: #1f2937;
+  --sidebar-accent: #111827;
+  --sidebar-accent-hover: #1f2937;
+  --sidebar-active-bg: rgba(59, 130, 246, 0.25);
+  --sidebar-active-text: #93c5fd;
+
+  /* Header Tokens */
+  --header-bg: #0b0f19;
+  --header-border: #1f2937;
+  --header-foreground: #f8fafc;
+
+  /* Judicial Status Badges (Dark Mode High Contrast) */
+  --status-tramite-bg: rgba(30, 64, 175, 0.25);
+  --status-tramite-text: #93c5fd;
+  --status-tramite-border: rgba(59, 130, 246, 0.35);
+
+  --status-proyecto-bg: rgba(161, 98, 7, 0.25);
+  --status-proyecto-text: #fde047;
+  --status-proyecto-border: rgba(234, 179, 8, 0.35);
+
+  --status-concluido-bg: rgba(21, 128, 61, 0.25);
+  --status-concluido-text: #86efac;
+  --status-concluido-border: rgba(34, 197, 94, 0.35);
+
+  --status-archivo-bg: rgba(71, 85, 105, 0.25);
+  --status-archivo-text: #cbd5e1;
+  --status-archivo-border: rgba(100, 116, 139, 0.35);
+
+  /* Dark Theme Accent Light/Lighter overrides */
+  --color-accent-light: rgba(37, 99, 235, 0.2);
+  --color-accent-lighter: rgba(37, 99, 235, 0.3);
+  --color-accent-ring: rgba(96, 165, 250, 0.4);
+}
+
+/* ==========================================================================
+   3. 7 PRESET ACCENT PALETTES
+   ========================================================================== */
+
+/* 1. Azul Clásico (Default) */
+html[data-accent="azul-clasico"],
+html[data-accent="azul-cielo"] {
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-light: #eff6ff;
+  --color-accent-lighter: #dbeafe;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(37, 99, 235, 0.35);
+}
+html[data-theme="dark"][data-accent="azul-clasico"],
+html.dark[data-accent="azul-clasico"],
+html[data-theme="dark"][data-accent="azul-cielo"],
+html.dark[data-accent="azul-cielo"] {
+  --color-accent-light: rgba(37, 99, 235, 0.2);
+  --color-accent-lighter: rgba(37, 99, 235, 0.3);
+  --color-accent-ring: rgba(96, 165, 250, 0.4);
+}
+
+/* 2. Esmeralda (Emerald) */
+html[data-accent="esmeralda"],
+html[data-accent="esmeralda-judicial"] {
+  --color-accent: #059669;
+  --color-accent-hover: #047857;
+  --color-accent-light: #ecfdf5;
+  --color-accent-lighter: #d1fae5;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(5, 150, 105, 0.35);
+}
+html[data-theme="dark"][data-accent="esmeralda"],
+html.dark[data-accent="esmeralda"],
+html[data-theme="dark"][data-accent="esmeralda-judicial"],
+html.dark[data-accent="esmeralda-judicial"] {
+  --color-accent: #10b981;
+  --color-accent-hover: #059669;
+  --color-accent-light: rgba(16, 185, 129, 0.2);
+  --color-accent-lighter: rgba(16, 185, 129, 0.3);
+  --color-accent-ring: rgba(16, 185, 129, 0.4);
+}
+
+/* 3. Púrpura (Purple / Royal Purple) */
+html[data-accent="purpura"],
+html[data-accent="purpura-real"] {
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
+  --color-accent-light: #f5f3ff;
+  --color-accent-lighter: #ede9fe;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(124, 58, 237, 0.35);
+}
+html[data-theme="dark"][data-accent="purpura"],
+html.dark[data-accent="purpura"],
+html[data-theme="dark"][data-accent="purpura-real"],
+html.dark[data-accent="purpura-real"] {
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #7c3aed;
+  --color-accent-light: rgba(139, 92, 246, 0.2);
+  --color-accent-lighter: rgba(139, 92, 246, 0.3);
+  --color-accent-ring: rgba(139, 92, 246, 0.4);
+}
+
+/* 4. Ámbar (Amber / Judicial Gold) */
+html[data-accent="ambar"],
+html[data-accent="ambar-judicial"] {
+  --color-accent: #d97706;
+  --color-accent-hover: #b45309;
+  --color-accent-light: #fffbeb;
+  --color-accent-lighter: #fef3c7;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(217, 119, 6, 0.35);
+}
+html[data-theme="dark"][data-accent="ambar"],
+html.dark[data-accent="ambar"],
+html[data-theme="dark"][data-accent="ambar-judicial"],
+html.dark[data-accent="ambar-judicial"] {
+  --color-accent: #f59e0b;
+  --color-accent-hover: #d97706;
+  --color-accent-light: rgba(245, 158, 11, 0.2);
+  --color-accent-lighter: rgba(245, 158, 11, 0.3);
+  --color-accent-ring: rgba(245, 158, 11, 0.4);
+}
+
+/* 5. Carmesí (Crimson / Ruby) */
+html[data-accent="carmesi"],
+html[data-accent="rubi"] {
+  --color-accent: #e11d48;
+  --color-accent-hover: #be123c;
+  --color-accent-light: #fff1f2;
+  --color-accent-lighter: #ffe4e6;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(225, 29, 72, 0.35);
+}
+html[data-theme="dark"][data-accent="carmesi"],
+html.dark[data-accent="carmesi"],
+html[data-theme="dark"][data-accent="rubi"],
+html.dark[data-accent="rubi"] {
+  --color-accent: #f43f5e;
+  --color-accent-hover: #e11d48;
+  --color-accent-light: rgba(244, 63, 94, 0.2);
+  --color-accent-lighter: rgba(244, 63, 94, 0.3);
+  --color-accent-ring: rgba(244, 63, 94, 0.4);
+}
+
+/* 6. Índigo (Indigo) */
+html[data-accent="indigo"] {
+  --color-accent: #4f46e5;
+  --color-accent-hover: #4338ca;
+  --color-accent-light: #eef2ff;
+  --color-accent-lighter: #e0e7ff;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(79, 70, 229, 0.35);
+}
+html[data-theme="dark"][data-accent="indigo"],
+html.dark[data-accent="indigo"] {
+  --color-accent: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-accent-light: rgba(99, 102, 241, 0.2);
+  --color-accent-lighter: rgba(99, 102, 241, 0.3);
+  --color-accent-ring: rgba(99, 102, 241, 0.4);
+}
+
+/* 7. Cian (Cyan / Teal) */
+html[data-accent="cian"] {
+  --color-accent: #0891b2;
+  --color-accent-hover: #0e7490;
+  --color-accent-light: #ecfeff;
+  --color-accent-lighter: #cffafe;
+  --color-accent-foreground: #ffffff;
+  --color-accent-ring: rgba(8, 145, 178, 0.35);
+}
+html[data-theme="dark"][data-accent="cian"],
+html.dark[data-accent="cian"] {
+  --color-accent: #06b6d4;
+  --color-accent-hover: #0891b2;
+  --color-accent-light: rgba(6, 182, 212, 0.2);
+  --color-accent-lighter: rgba(6, 182, 212, 0.3);
+  --color-accent-ring: rgba(6, 182, 212, 0.4);
+}
+
+/* ==========================================================================
+   4. DENSITY SYSTEM (Compact vs Comfortable)
+   ========================================================================== */
+
+/* Comfortable: spacious touch targets, comfortable viewing */
+:root,
+html[data-density="comfortable"],
+html:not([data-density]) {
+  --density-table-py: 0.875rem;    /* 14px */
+  --density-table-px: 1.25rem;     /* 20px */
+  --density-card-p: 1.5rem;        /* 24px */
+  --density-btn-py: 0.625rem;      /* 10px */
+  --density-btn-px: 1.125rem;      /* 18px */
+  --density-input-py: 0.625rem;    /* 10px */
+  --density-input-px: 0.875rem;    /* 14px */
+  --density-nav-py: 0.625rem;      /* 10px */
+  --density-nav-px: 0.75rem;       /* 12px */
+  --density-gap: 1.25rem;          /* 20px */
+  --density-row-h: 3.75rem;        /* 60px */
+}
+
+/* Compact: high-density judicial data tables, maximized information density */
+html[data-density="compact"] {
+  --density-table-py: 0.375rem;    /* 6px */
+  --density-table-px: 0.75rem;     /* 12px */
+  --density-card-p: 1rem;          /* 16px */
+  --density-btn-py: 0.375rem;      /* 6px */
+  --density-btn-px: 0.75rem;       /* 12px */
+  --density-input-py: 0.375rem;    /* 6px */
+  --density-input-px: 0.625rem;    /* 10px */
+  --density-nav-py: 0.375rem;      /* 6px */
+  --density-nav-px: 0.5rem;        /* 8px */
+  --density-gap: 0.75rem;          /* 12px */
+  --density-row-h: 2.5rem;         /* 40px */
+}
+
+/* Automatic density adjustments on tables under compact mode */
+html[data-density="compact"] table tbody td {
+  padding-top: var(--density-table-py) !important;
+  padding-bottom: var(--density-table-py) !important;
+  padding-left: var(--density-table-px);
+  padding-right: var(--density-table-px);
+  font-size: 0.875rem;
+}
+
+html[data-density="compact"] table thead th {
+  padding-top: calc(var(--density-table-py) * 0.8) !important;
+  padding-bottom: calc(var(--density-table-py) * 0.8) !important;
+  padding-left: var(--density-table-px);
+  padding-right: var(--density-table-px);
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   5. FONT SCALE SYSTEM (Small, Normal, Large)
+   ========================================================================== */
+
+/* Small Font Scale (87.5% / 14px root rem base) */
+html[data-font-size="small"] {
+  font-size: 14px;
+  --font-scale-base: 0.875rem;
+}
+
+/* Normal Font Scale (100% / 16px root rem base) */
+html[data-font-size="normal"],
+html:not([data-font-size]) {
+  font-size: 16px;
+  --font-scale-base: 1rem;
+}
+
+/* Large Font Scale (112.5% / 18px root rem base for accessibility) */
+html[data-font-size="large"] {
+  font-size: 18px;
+  --font-scale-base: 1.125rem;
+}
+
+/* ==========================================================================
+   SKELETON SHIMMER / WAVE ANIMATION
+   Suppressed automatically by section 6 when data-animations="disabled"
+   ========================================================================== */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s infinite;
+}
+
+/* ==========================================================================
+   SUBTLE JUDICIAL MOTION & ENTRANCE ANIMATIONS (Milestone 4)
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Canonical Motion Utility Classes */
+.animate-fade-in {
+  animation: fadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-down {
+  animation: slideInDown 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-slide-up {
+  animation: slideInUp 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Semantic Component Entrances */
+.modal-entrance {
+  animation: scaleIn 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.dropdown-entrance {
+  animation: slideInDown 140ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.toast-entrance {
+  animation: slideInUp 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card-stagger-enter {
+  animation: fadeIn 200ms ease-out both;
+}
+
+/* Tailwind v4 Backward-Compatibility & Composition Bridge */
+.animate-in {
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.zoom-in-95 {
+  animation-name: scaleIn;
+}
+
+.zoom-in-75 {
+  animation-name: scaleIn;
+}
+
+.slide-in-from-right {
+  animation-name: slideInRight;
+  animation-duration: 250ms;
+}
+
+.slide-in-from-left {
+  animation-name: slideInLeft;
+  animation-duration: 250ms;
+}
+
+.slide-in-from-top {
+  animation-name: slideInDown;
+}
+
+.slide-in-from-bottom {
+  animation-name: slideInUp;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ==========================================================================
+   6. UNIVERSAL ANIMATION KILL-SWITCH
+   Forces animation-duration: 0.001ms, transition-duration: 0.001ms, iteration: 1
+   Supports prefers-reduced-motion media query AND html[data-animations="disabled"]
+   Includes full suppression for ::view-transition-* pseudo-elements
+   ========================================================================== */
+
+/* OS-level Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after,
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* User Appearance Preference: Disabled Animations */
+html[data-animations="disabled"] *,
+html[data-animations="disabled"] *::before,
+html[data-animations="disabled"] *::after,
+html[data-animations="disabled"],
+html[data-animations="disabled"]::view-transition-group(*),
+html[data-animations="disabled"]::view-transition-image-pair(*),
+html[data-animations="disabled"]::view-transition-old(*),
+html[data-animations="disabled"]::view-transition-new(*),
+html[data-animations="false"] *,
+html[data-animations="false"] *::before,
+html[data-animations="false"] *::after,
+html[data-animations="false"],
+body[data-animations="disabled"] *,
+body[data-animations="false"] * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-animations="disabled"]::view-transition-group(*),
+html[data-animations="disabled"]::view-transition-image-pair(*),
+html[data-animations="disabled"]::view-transition-old(*),
+html[data-animations="disabled"]::view-transition-new(*) {
+  animation: none !important;
+}
+
+/* ==========================================================================
+   7. CORE UTILITY CLASSES & BASE ELEMENT STYLING
+   ========================================================================== */
+
+/* Base document defaults */
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accent helper utilities */
+.bg-accent { background-color: var(--color-accent) !important; }
+.bg-accent-hover:hover { background-color: var(--color-accent-hover) !important; }
+.bg-accent-light { background-color: var(--color-accent-light) !important; }
+.bg-accent-lighter { background-color: var(--color-accent-lighter) !important; }
+.text-accent { color: var(--color-accent) !important; }
+.border-accent { border-color: var(--color-accent) !important; }
+.ring-accent:focus { --tw-ring-color: var(--color-accent) !important; }
+
+/* Surface & Card utilities */
+.bg-card { background-color: var(--card) !important; }
+.text-card-foreground { color: var(--card-foreground) !important; }
+.border-card { border-color: var(--card-border) !important; }
+
+.bg-popover { background-color: var(--popover) !important; }
+.text-popover-foreground { color: var(--popover-foreground) !important; }
+.border-popover { border-color: var(--popover-border) !important; }
+
+.bg-muted-custom { background-color: var(--muted) !important; }
+.text-muted-custom { color: var(--muted-foreground) !important; }
+.border-custom { border-color: var(--border) !important; }
+
+/* Status Badges */
+.badge-tramite {
+  background-color: var(--status-tramite-bg);
+  color: var(--status-tramite-text);
+  border: 1px solid var(--status-tramite-border);
+}
+.badge-proyecto {
+  background-color: var(--status-proyecto-bg);
+  color: var(--status-proyecto-text);
+  border: 1px solid var(--status-proyecto-border);
+}
+.badge-concluido {
+  background-color: var(--status-concluido-bg);
+  color: var(--status-concluido-text);
+  border: 1px solid var(--status-concluido-border);
+}
+.badge-archivo {
+  background-color: var(--status-archivo-bg);
+  color: var(--status-archivo-text);
+  border: 1px solid var(--status-archivo-border);
+}
+
+/* Density Utility Helpers */
+.p-density-card { padding: var(--density-card-p) !important; }
+.py-density-table { padding-top: var(--density-table-py) !important; padding-bottom: var(--density-table-py) !important; }
+.px-density-table { padding-left: var(--density-table-px) !important; padding-right: var(--density-table-px) !important; }
+.py-density-btn { padding-top: var(--density-btn-py) !important; padding-bottom: var(--density-btn-py) !important; }
+.px-density-btn { padding-left: var(--density-btn-px) !important; padding-right: var(--density-btn-px) !important; }
+.py-density-input { padding-top: var(--density-input-py) !important; padding-bottom: var(--density-input-py) !important; }
+.px-density-input { padding-left: var(--density-input-px) !important; padding-right: var(--density-input-px) !important; }
+.gap-density { gap: var(--density-gap) !important; }
+
+/* Clean Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.6);
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb,
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+/* App shell grid: sidebar + header persist (Astro island), only <main> swaps on navigation */
+.app-grid {
+  display: grid;
+  height: 100vh;
+  overflow: hidden;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-areas:
+    "banner banner"
+    "side header"
+    "side main";
+}
+html[data-sidebar-pos="right"] .app-grid {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "banner banner"
+    "header side"
+    "main side";
+}
+@media (max-width: 767px) {
+  .app-grid,
+  html[data-sidebar-pos="right"] .app-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "banner" "header" "main";
+  }
+}
+
+/* Dark form controls safety net (lowest layer: explicit utilities still win) */
+@layer base {
+  html.dark, html[data-theme="dark"] { color-scheme: dark; }
+  html.dark :is(input:not([type=checkbox],[type=radio],[type=range],[type=color]), select, textarea),
+  html[data-theme="dark"] :is(input:not([type=checkbox],[type=radio],[type=range],[type=color]), select, textarea) {
+    background-color: var(--input);
+    color: var(--foreground);
+    border-color: var(--input-border);
+  }
+  html.dark ::placeholder, html[data-theme="dark"] ::placeholder { color: #64748b; }
+}

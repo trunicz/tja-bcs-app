@@ -1,0 +1,57 @@
+---
+/**
+ * TJA BCS - Login Page
+ * File target: frontend/src/pages/login.astro
+ */
+import '../styles/global.css';
+import LoginForm from '../components/LoginForm';
+
+// SSR Defense: If user already has valid auth_token cookie, redirect to dashboard
+const token = Astro.cookies.get('auth_token')?.value;
+if (token) {
+  return Astro.redirect('/');
+}
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Acceso - Tribunal de Justicia Administrativa BCS</title>
+  </head>
+  <body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex items-center justify-center p-4 relative overflow-hidden selection:bg-blue-600 selection:text-white">
+    
+    <!-- Background Ambient Glow Decoration -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-600/20 blur-[130px] rounded-full"></div>
+      <div class="absolute top-[60%] -right-[10%] w-[45%] h-[60%] bg-indigo-600/20 blur-[110px] rounded-full"></div>
+    </div>
+
+    <!-- Login Container Card -->
+    <div class="relative z-10 w-full max-w-md bg-slate-800/85 backdrop-blur-2xl border border-slate-700/60 p-8 sm:p-9 rounded-3xl shadow-2xl">
+      <!-- Header Branding -->
+      <div class="text-center mb-8">
+        <div class="mx-auto w-16 h-16 bg-gradient-to-tr from-blue-700 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 mb-5 transform rotate-3 hover:rotate-0 transition-transform">
+          <span class="text-3xl select-none" role="img" aria-label="Balanza de la Justicia">⚖</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-white mb-1.5">
+          Tribunal de Justicia Administrativa
+        </h1>
+        <p class="text-blue-400/90 text-sm font-medium tracking-wide">
+          Estado de Baja California Sur
+        </p>
+      </div>
+
+      <!-- Interactive React Login Island -->
+      <LoginForm client:load />
+      
+      <!-- Footer Copyright & Legal -->
+      <div class="mt-8 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-700/60 pt-5">
+        <p class="font-medium text-slate-400">Sistema Integral de Control de Expedientes</p>
+        <p class="mt-1">&copy; 2026 Tribunal de Justicia Administrativa BCS. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,185 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+/**
+ * TJA BCS - Main Configuration Hub
+ * File: frontend/src/pages/configuracion.astro
+ *
+ * Provides centralized access to system configurations:
+ * 1. Seguridad y Roles: Management of roles and granular permissions (/configuracion/roles).
+ * 2. Catálogos del Sistema: Lookup tables for jurisdiction salas, statuses, types, laws.
+ * 3. Preferencias del Sistema: Theme, email notifications, system preferences.
+ */
+---
+
+<Layout title="Configuración - TJA BCS">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">Configuración del Sistema</h1>
+    <p class="text-slate-600 dark:text-slate-300 mt-2">Administración de perfiles de seguridad, catálogos y preferencias.</p>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Seguridad y Roles (Milestone 4 Integration) -->
+    <div class="bg-white dark:bg-slate-900 rounded-lg shadow flex flex-col">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Seguridad y Roles
+        </h2>
+      </div>
+      <div class="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <p class="text-slate-600 dark:text-slate-300 mb-4 text-sm">
+            Administra los roles de usuario y configura la matriz granular de facultades del sistema.
+          </p>
+          <div class="space-y-3">
+            <a
+              href="/configuracion/roles"
+              class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-blue-50/50 hover:border-blue-200 transition-colors group"
+            >
+              <div>
+                <p class="font-medium text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition-colors">Roles y Permisos</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Configuración de perfiles y permisos por rol</p>
+              </div>
+              <span class="text-blue-500 group-hover:text-blue-700 font-medium text-sm flex items-center">
+                Gestionar <span class="ml-1 group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-400 flex items-center">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2"></span>
+          Control de acceso basado en roles (RBAC)
+        </div>
+      </div>
+    </div>
+
+    <!-- Gestión de Catálogos -->
+    <div class="bg-white dark:bg-slate-900 rounded-lg shadow flex flex-col">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+          </svg>
+          Catálogos del Sistema
+        </h2>
+      </div>
+      <div class="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <p class="text-slate-600 dark:text-slate-300 mb-4 text-sm">Gestiona los valores predeterminados utilizados en los expedientes.</p>
+          <div class="space-y-3">
+            <a href="#" class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <div>
+                <p class="font-medium text-slate-800 dark:text-slate-100">Salas</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Administra las salas de jurisdicción</p>
+              </div>
+              <span class="text-blue-500 font-medium text-sm">Gestionar &rarr;</span>
+            </a>
+            <a href="#" class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <div>
+                <p class="font-medium text-slate-800 dark:text-slate-100">Estatus y Sub-Estatus</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Configura los estados procesales</p>
+              </div>
+              <span class="text-blue-500 font-medium text-sm">Gestionar &rarr;</span>
+            </a>
+            <a href="#" class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <div>
+                <p class="font-medium text-slate-800 dark:text-slate-100">Tipos de Asunto</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Categorías de expedientes</p>
+              </div>
+              <span class="text-blue-500 font-medium text-sm">Gestionar &rarr;</span>
+            </a>
+            <a href="#" class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <div>
+                <p class="font-medium text-slate-800 dark:text-slate-100">Leyes Aplicables</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Normativas vinculadas a los asuntos</p>
+              </div>
+              <span class="text-blue-500 font-medium text-sm">Gestionar &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferencias del Sistema -->
+    <div class="bg-white dark:bg-slate-900 rounded-lg shadow flex flex-col">
+      <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          Preferencias
+        </h2>
+      </div>
+      <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-slate-800 dark:text-slate-100">Tema Oscuro</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Alterna entre modo claro y oscuro (se guarda en tus preferencias)</p>
+            </div>
+            <button
+              id="cfg-theme-toggle"
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-label="Tema oscuro"
+              class="bg-slate-300 w-12 h-6 rounded-full relative cursor-pointer transition-colors"
+            >
+              <span id="cfg-theme-knob" class="bg-white w-4 h-4 rounded-full absolute left-1 top-1 shadow-sm transition-all"></span>
+            </button>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-slate-800 dark:text-slate-100">Notificaciones por Correo</p>
+              <p class="text-sm text-slate-500 dark:text-slate-400">Recibe alertas sobre cambios en expedientes</p>
+            </div>
+            <button class="bg-blue-500 w-12 h-6 rounded-full relative cursor-pointer">
+              <span class="bg-white w-4 h-4 rounded-full absolute right-1 top-1 shadow-sm"></span>
+            </button>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+          <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { readPreferencesFromStorage, writePreferencesToStorage, applyPreferencesToDOM, emitPreferencesChanged, resolveEffectiveTheme } from '../lib/preferences';
+  function syncToggle() {
+    const btn = document.getElementById('cfg-theme-toggle');
+    const knob = document.getElementById('cfg-theme-knob');
+    if (!btn || !knob) return;
+    const dark = resolveEffectiveTheme(readPreferencesFromStorage().tema) === 'dark';
+    btn.setAttribute('aria-checked', String(dark));
+    btn.classList.toggle('bg-blue-500', dark);
+    btn.classList.toggle('bg-slate-300', !dark);
+    knob.style.left = dark ? '1.75rem' : '0.25rem';
+  }
+  function init() {
+    const btn = document.getElementById('cfg-theme-toggle');
+    if (!btn || btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      const prefs = readPreferencesFromStorage();
+      const dark = resolveEffectiveTheme(prefs.tema) === 'dark';
+      const next = { ...prefs, tema: dark ? 'light' : 'dark' } as typeof prefs;
+      writePreferencesToStorage(next);
+      applyPreferencesToDOM(next);
+      emitPreferencesChanged(next);
+      syncToggle();
+    });
+    syncToggle();
+    window.addEventListener('tja:preferences-changed', syncToggle);
+  }
+  document.addEventListener('astro:page-load', init);
+  init();
+</script>

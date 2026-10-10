@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RoleConfiguration from '../../components/RoleConfiguration';
+
+/**
+ * TJA BCS - Role and Permission Management Page
+ * Route: /configuracion/roles
+ *
+ * SSR Route Guard:
+ * Strictly restricts access to users with granular permission 'roles:manage'
+ * or users holding the 'Administrador' role (Global Admin).
+ * Unauthorized authenticated requests receive HTTP status 403 and a dedicated
+ * Access Denied interface. Unauthenticated requests are redirected to /login.
+ */
+
+const user = Astro.locals.user;
+const token = Astro.locals.token;
+
+// Defensive check for unauthenticated requests
+if (!user && !token) {
+  return Astro.redirect('/login?redirect=' + encodeURIComponent(Astro.url.pathname + Astro.url.search));
+}
+
+const isGlobalAdmin = user?.rol === 'Administrador';
+const hasManagePermission = Boolean(
+  Array.isArray(user?.permisos) && user?.permisos.includes('roles:manage')
+);
+const isAuthorized = Boolean(isGlobalAdmin || hasManagePermission);
+
+// Set HTTP 403 response status for unauthorized authenticated users
+if (!isAuthorized) {
+  Astro.response.status = 403;
+}
+---
+
+{isAuthorized ? (
+  <Layout title="Roles y Permisos - TJA BCS">
+    <!-- Breadcrumb Navigation: Inicio > Configuración > Roles y Permisos -->
+    <nav class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400 mb-4" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center">
+        <svg class="w-3.5 h-3.5 mr-1 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        Inicio
+      </a>
+      <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <a href="/configuracion" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Configuración</a>
+      <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <span class="text-slate-900 dark:text-slate-100 font-semibold" aria-current="page">Roles y Permisos</span>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">Roles y Permisos</h1>
+        <p class="text-slate-600 dark:text-slate-400 mt-1 text-sm">
+          Configuración de perfiles de usuario y matriz de facultades granulares del sistema.
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a
+          href="/configuracion"
+          class="inline-flex items-center px-3.5 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 shadow-sm transition-colors"
+        >
+          <svg class="w-4 h-4 mr-1.5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver a Configuración
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive Role & Permission Configuration Island -->
+    <RoleConfiguration client:load />
+  </Layout>
+) : (
+  <Layout title="Acceso Denegado (403) - TJA BCS">
+    <!-- Breadcrumb for Access Denied context -->
+    <nav class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Inicio</a>
+      <span class="text-slate-400 dark:text-slate-500">/</span>
+      <a href="/configuracion" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Configuración</a>
+      <span class="text-slate-400 dark:text-slate-500">/</span>
+      <span class="text-slate-700 dark:text-slate-200 font-semibold" aria-current="page">Acceso Denegado</span>
+    </nav>
+
+    <!-- 403 Forbidden Error Card -->
+    <div class="max-w-2xl mx-auto py-8">
+      <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-red-200 dark:border-red-900/50 overflow-hidden">
+        <div class="p-8 text-center">
+          <div class="w-16 h-16 bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-transparent dark:border-red-800/40 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Acceso Denegado (HTTP 403)</h2>
+          <p class="text-slate-600 dark:text-slate-400 mb-4 max-w-md mx-auto text-sm leading-relaxed">
+            Su cuenta actual no dispone de los privilegios necesarios para acceder al panel de configuración de roles.
+          </p>
+
+          <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 rounded-lg p-3 max-w-md mx-auto mb-6 text-left text-xs text-amber-800 dark:text-amber-300">
+            <p class="font-semibold mb-1">Requisitos de acceso:</p>
+            <ul class="list-disc list-inside space-y-0.5">
+              <li>Permiso granular requerido: <code class="font-mono font-bold text-red-700 dark:text-red-400">roles:manage</code></li>
+              <li>O pertenecer al rol de <span class="font-bold">Administrador Global</span></li>
+            </ul>
+          </div>
+
+          <div class="flex items-center justify-center gap-3">
+            <a
+              href="/configuracion"
+              class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500 text-white rounded-lg font-medium text-sm shadow-sm transition-colors"
+            >
+              ← Regresar a Configuración
+            </a>
+            <a
+              href="/"
+              class="inline-flex items-center px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 font-medium text-sm transition-colors"
+            >
+              Ir al Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Layout>
+)}

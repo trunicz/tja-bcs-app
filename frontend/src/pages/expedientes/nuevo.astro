@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CreateExpediente from '../../components/CreateExpediente.tsx';
+---
+
+<Layout title="Nuevo Expediente - TJA BCS">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">Crear Nuevo Expediente</h1>
+    <a href="/expedientes" class="text-blue-600 dark:text-blue-300 hover:underline">← Volver a expedientes</a>
+  </div>
+  
+  <CreateExpediente client:load />
+</Layout>

@@ -1,0 +1,145 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+/**
+ * TJA BCS - Mensajería y Colaboración Interna
+ * File: frontend/src/pages/mensajeria.astro
+ *
+ * Route: /mensajeria
+ * Description: Canal de comunicación interna y deliberación entre salas y ponencias.
+ * Placeholder status: Claramente etiquetado con distintivo "Próximamente" / "Coming Soon".
+ * SSR Protection: Redirige a usuarios no autenticados a /login.
+ */
+
+const user = Astro.locals.user;
+const token = Astro.locals.token;
+
+if (!user && !token) {
+  return Astro.redirect('/login?redirect=' + encodeURIComponent(Astro.url.pathname + Astro.url.search));
+}
+---
+
+<Layout title="Mensajería Interna - Próximamente - TJA BCS">
+  <!-- Breadcrumb Navigation -->
+  <nav class="flex items-center space-x-2 text-xs font-medium text-slate-500 dark:text-slate-400 mb-6" aria-label="Breadcrumb">
+    <a href="/" class="hover:text-blue-600 transition-colors flex items-center">
+      <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      Inicio
+    </a>
+    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+    <span class="text-slate-900 dark:text-slate-100 font-semibold" aria-current="page">Mensajería Interna</span>
+  </nav>
+
+  <!-- Hero Placeholder Card -->
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <!-- Decorative Header Banner -->
+      <div class="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-800 p-8 sm:p-10 text-white relative overflow-hidden">
+        <div class="absolute -right-8 -bottom-8 opacity-15 transform rotate-12 pointer-events-none">
+          <svg class="w-64 h-64" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+          </svg>
+        </div>
+
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-4">
+            <!-- Test Verification Target Badge: "Próximamente" -->
+            <span class="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/95 dark:bg-slate-900/95 text-purple-900 dark:text-purple-300 shadow-sm border border-purple-200 dark:border-purple-800">
+              ★ Próximamente (Coming Soon)
+            </span>
+            <span class="text-xs font-semibold text-purple-100 bg-purple-700/40 px-3 py-1 rounded-full">
+              Fase 3 • Cuarto Trimestre 2026
+            </span>
+          </div>
+
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+            Mensajería y Comunicaciones Internas
+          </h1>
+          <p class="mt-3 text-purple-100 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Plataforma reservada para la coordinación inmediata entre ponencias, secretarías de acuerdos y magistraturas, manteniendo la confidencialidad de los proyectos de resolución.
+          </p>
+        </div>
+      </div>
+
+      <!-- Roadmap and Features Architecture -->
+      <div class="p-8 sm:p-10 space-y-8">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">Hoja de Ruta del Módulo de Mensajería</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl">
+            Este servicio dotará al Tribunal de un canal de comunicación institucional blindado con cifrado de extremo a extremo, evitando el uso de herramientas no oficiales para asuntos jurisdiccionales.
+          </p>
+        </div>
+
+        <!-- Capability Pillars -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-purple-100 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 font-bold flex items-center justify-center text-sm">
+              01
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Notas de Trabajo por Expediente</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Hilos de deliberación vinculados al expediente, accesibles únicamente por los secretarios y proyectistas autorizados.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 font-bold flex items-center justify-center text-sm">
+              02
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Canales de Sala y Ponencia</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Espacios colaborativos por sala de adscripción para el seguimiento colegiado de acuerdos y audiencias.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center text-sm">
+              03
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Menciones Directas (@usuario)</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Llamadas de atención y solicitud de turno de proyectos con integración inmediata al centro de notificaciones.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 space-y-2">
+            <div class="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold flex items-center justify-center text-sm">
+              04
+            </div>
+            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Seguridad y Reserva Criptográfica</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Protocolos de confidencialidad para proteger proyectos de sentencia en deliberación antes de su publicación oficial.
+            </p>
+          </div>
+        </div>
+
+        <!-- Action Callouts -->
+        <div class="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse"></span>
+            <span>Desarrollo planificado para la Fase 3 del SICE.</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a
+              href="/notificaciones"
+              class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-semibold text-xs rounded-xl transition-colors"
+            >
+              Ver Notificaciones
+            </a>
+            <a
+              href="/"
+              class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-colors"
+            >
+              Volver al Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

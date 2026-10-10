@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import UsuarioDetail from '../../components/UsuarioDetail.tsx';
+
+const { id } = Astro.params;
+---
+
+<Layout title="Perfil de Usuario - TJA BCS">
+  <div class="mb-6">
+    <a href="/usuarios" class="text-blue-600 dark:text-blue-300 hover:underline mb-2 inline-block">← Volver a usuarios</a>
+    <h1 class="text-3xl font-bold text-slate-800 dark:text-slate-100">Actividad del Usuario</h1>
+  </div>
+  
+  <UsuarioDetail client:load usuarioId={id} />
+</Layout>

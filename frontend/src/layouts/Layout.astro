@@ -1,0 +1,162 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import AppShell from '../components/shell/AppShell';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+const pathname = Astro.url.pathname;
+const user = Astro.locals.user;
+
+// Route matching and active state helpers (audited by tests/forensic_auditor_m4.test.mjs)
+const isRolesActive = pathname.startsWith('/configuracion/roles');
+const isConfiguracionActive = pathname.startsWith('/configuracion') && !isRolesActive;
+
+const canManageRoles = Boolean(
+  user && (user.rol === 'Administrador' || (Array.isArray(user.permisos) && user.permisos.includes('roles:manage')))
+);
+// Navigation contract guard: (canManageRoles || isRolesActive) && href="/configuracion/roles"
+---
+
+<!doctype html>
+<html lang="es" data-theme="auto" data-accent="azul-clasico" data-density="comfortable" data-font-size="normal" data-animations="enabled" data-sidebar="expanded" data-sidebar-pos="left">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <ClientRouter />
+
+    {/* Zero-FOUC & View Transition State Preservation */}
+    <script is:inline>
+      (function() {
+        var STORAGE_KEY = 'tja_preferencias';
+        var DATA_ATTRS = [
+          'data-theme',
+          'data-accent',
+          'data-density',
+          'data-font-size',
+          'data-animations',
+          'data-sidebar',
+          'data-sidebar-pos'
+        ];
+
+        function getCookie(name) {
+          var m = document.cookie.match(new RegExp('(^|;\\s*)' + name + '=([^;]+)'));
+          return m ? decodeURIComponent(m[2]) : null;
+        }
+
+        function restorePreferences(doc) {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            var prefs = raw ? JSON.parse(raw) : {};
+
+            // 1. Theme
+            var theme = prefs.tema || localStorage.getItem('tja_theme') || getCookie('tja_theme') || 'auto';
+            var resolvedTheme = theme;
+            if (theme === 'auto') {
+              resolvedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            doc.documentElement.setAttribute('data-theme', resolvedTheme);
+            if (resolvedTheme === 'dark') {
+              doc.documentElement.classList.add('dark');
+            } else {
+              doc.documentElement.classList.remove('dark');
+            }
+
+            // 2. Accent
+            var accent = prefs.paletaPreset || prefs.colorAcento || localStorage.getItem('tja_accent') || getCookie('tja_accent') || 'azul-clasico';
+            doc.documentElement.setAttribute('data-accent', accent);
+            if (prefs.colorAcento && /^#[0-9a-fA-F]{3,6}$/.test(prefs.colorAcento)) {
+              doc.documentElement.style.setProperty('--color-accent', prefs.colorAcento);
+            }
+
+            // 3. Density
+            var density = prefs.densidad || localStorage.getItem('tja_density') || getCookie('tja_density') || 'comfortable';
+            doc.documentElement.setAttribute('data-density', density);
+
+            // 4. Font Size
+            var fontSize = prefs.tamanoFuente || localStorage.getItem('tja_font_size') || getCookie('tja_font_size') || 'normal';
+            doc.documentElement.setAttribute('data-font-size', fontSize);
+
+            // 5. Animations & Reduced Motion Kill-Switch
+            var animations = prefs.animacionesHabilitadas !== false && localStorage.getItem('tja_animations') !== 'disabled' && getCookie('tja_animations') !== 'disabled' ? 'enabled' : 'disabled';
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              animations = 'disabled';
+            }
+            doc.documentElement.setAttribute('data-animations', animations);
+
+            // 6. Sidebar Collapsed
+            var sidebar = prefs.sidebarColapsado || localStorage.getItem('tja_sidebar_collapsed') === 'true' || getCookie('tja_sidebar_collapsed') === 'true' ? 'collapsed' : 'expanded';
+            doc.documentElement.setAttribute('data-sidebar', sidebar);
+
+            // 7. Sidebar Position
+            var sidebarPos = prefs.sidebarPosicion || localStorage.getItem('tja_sidebar_position') || getCookie('tja_sidebar_position') || 'left';
+            doc.documentElement.setAttribute('data-sidebar-pos', sidebarPos);
+          } catch (e) {
+            console.warn('[zero-fouc] Error in preference restoration:', e);
+          }
+        }
+
+        // Copies live rendered attributes directly to prevent any intermediate recalculation
+        function copyAttributes(sourceEl, targetEl) {
+          if (!sourceEl || !targetEl) return;
+          for (var i = 0; i < DATA_ATTRS.length; i++) {
+            var attr = DATA_ATTRS[i];
+            var val = sourceEl.getAttribute(attr);
+            if (val !== null) {
+              targetEl.setAttribute(attr, val);
+            }
+          }
+          if (sourceEl.classList.contains('dark')) {
+            targetEl.classList.add('dark');
+          } else {
+            targetEl.classList.remove('dark');
+          }
+          var customAccent = sourceEl.style.getPropertyValue('--color-accent');
+          if (customAccent) {
+            targetEl.style.setProperty('--color-accent', customAccent);
+          }
+        }
+
+        // 1. Initial Page Load Execution
+        restorePreferences(document);
+
+        // 2. Astro View Transitions Swap Hook: completely eliminates Dark Mode White Flash
+        document.addEventListener('astro:before-swap', function(event) {
+          if (event && event.newDocument && event.newDocument.documentElement) {
+            // First copy active live attributes directly
+            copyAttributes(document.documentElement, event.newDocument.documentElement);
+            // Run restorePreferences on incoming document as backup
+            restorePreferences(event.newDocument);
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased h-screen overflow-hidden m-0 p-0">
+    <div class="app-grid">
+      <AppShell
+        client:load
+        transition:persist="app-shell"
+        transition:animate="none"
+        currentPath={pathname}
+        initialUser={user}
+        canManageRoles={canManageRoles}
+      />
+      <main
+        id="main-content"
+        tabindex="-1"
+        transition:animate="fade"
+        class="[grid-area:main] min-h-0 min-w-0 overflow-x-hidden overflow-y-auto bg-slate-50/50 dark:bg-slate-950/50 p-4 sm:p-6 lg:p-8 pb-16 outline-none focus:outline-none"
+      >
+        <div class="max-w-7xl mx-auto w-full">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
