@@ -168,12 +168,20 @@ async function parseResponseData<T>(response: Response): Promise<T> {
     return null as unknown as T;
   }
 
-  const contentType = response.headers.get('content-type');
-  if (contentType && contentType.includes('application/json')) {
+  const contentType = response.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
     return (await response.json()) as T;
   }
 
-  return (await response.text()) as unknown as T;
+  const text = await response.text();
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    if (contentType.includes('text/html') || text.trim().startsWith('<')) {
+      throw new ApiError('El servidor devolvió una página HTML en lugar de datos JSON.', response.status);
+    }
+    return text as unknown as T;
+  }
 }
 
 /**

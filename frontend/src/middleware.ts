@@ -25,10 +25,11 @@ const STATIC_EXTENSION_REGEX =
 export const onRequest = defineMiddleware(async (context, next) => {
   const { pathname, search } = context.url;
 
-  // 1. Skip middleware for Astro internals and static assets
+  // 1. Skip middleware for Astro internals, static assets, and API endpoints
   if (
     pathname.startsWith('/_astro') ||
     pathname.startsWith('/@') ||
+    pathname.startsWith('/api') ||
     STATIC_EXTENSION_REGEX.test(pathname)
   ) {
     return next();
