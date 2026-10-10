@@ -14,8 +14,21 @@ const BACKEND_URL =
 function normalizeBackend(url: string): string {
   let u = (url || '').trim().replace(/\/+$/, '');
   if (!u) return DEFAULT_BACKEND;
+
+  // Render Blueprint's property: host passes internal service name "tja-bcs-backend" or "tja-bcs-backend:10000"
+  // which does not have valid external DNS or TLS certificates on free tier
+  if (u === 'tja-bcs-backend' || u.startsWith('tja-bcs-backend:') || u.startsWith('http://tja-bcs-backend') || u.startsWith('https://tja-bcs-backend')) {
+    return 'https://tja-bcs-backend.onrender.com';
+  }
+
   if (!/^https?:\/\//i.test(u)) {
-    u = u.includes('localhost') || u.includes('127.0.0.1') ? `http://${u}` : `https://${u}`;
+    if (u.includes('localhost') || u.includes('127.0.0.1')) {
+      return `http://${u}`;
+    }
+    if (u.includes('.')) {
+      return `https://${u}`;
+    }
+    return DEFAULT_BACKEND;
   }
   return u;
 }

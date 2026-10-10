@@ -31,7 +31,4 @@ services:
       - key: PORT
         value: 10000
       - key: PUBLIC_API_URL
-        fromService:
-          type: web
-          name: tja-bcs-backend
-          property: host
+        value: https://tja-bcs-backend.onrender.com

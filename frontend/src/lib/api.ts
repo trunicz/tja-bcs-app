@@ -26,6 +26,14 @@ function getClientOrServerBaseUrl(): string {
     'http://localhost:3001';
 
   const trimmed = envUrl.trim().replace(/\/+$/, '');
+  if (
+    trimmed === 'tja-bcs-backend' ||
+    trimmed.startsWith('tja-bcs-backend:') ||
+    trimmed.startsWith('http://tja-bcs-backend') ||
+    trimmed.startsWith('https://tja-bcs-backend')
+  ) {
+    return 'https://tja-bcs-backend.onrender.com';
+  }
   if (/^https?:\/\//i.test(trimmed)) {
     return trimmed;
   }
