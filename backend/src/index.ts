@@ -15,6 +15,26 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Root & Health Check Endpoints
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    servicio: 'API del Tribunal de Justicia Administrativa de BCS (TJA BCS)',
+    version: '1.0.0',
+    endpoints: {
+      auth: '/api/auth/login',
+      me: '/api/auth/me',
+      expedientes: '/api/expedientes',
+      catalogos: '/api/catalogos',
+      health: '/health'
+    }
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
+
 // ==========================================
 // AUTHENTICATION & IMPERSONATION ROUTES (M1)
 // ==========================================
@@ -661,6 +681,6 @@ app.get('/api/actividad', authenticate, requirePermission('expedientes:view'), a
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Servidor de TJA BCS corriendo en http://localhost:${PORT}`);
+app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`Servidor de TJA BCS corriendo en http://0.0.0.0:${PORT}`);
 });

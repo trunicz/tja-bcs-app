@@ -55,12 +55,17 @@ git push -u origin main
 
 Comparte esta lista de usuarios con los directivos y evaluadores para que puedan probar los diferentes niveles de acceso y la experiencia de usuario:
 
-| Rol | Correo Electrónico | Contraseña | Capacidades a Testear |
+| Rol | Correo Electrónico | Contraseña (ambas funcionan) | Capacidades a Testear |
 | :--- | :--- | :--- | :--- |
-| **Administrador General** | `admin@tjabcs.gob.mx` | `admin123` | Control total, gestión de roles y permisos granulares, suplantación de identidad ("Ver como"), configuración global. |
-| **Secretario de Acuerdos** | `secretario@tjabcs.gob.mx` | `secretario123` | Creación y edición de expedientes, cambio de estatus procesales, carga de notas y acuerdos. |
-| **Actuario Notificador** | `actuario@tjabcs.gob.mx` | `actuario123` | Agenda judicial, notificación de plazos procesales, vistas de calendario y audiencias. |
-| **Consulta / Dirección** | `consulta@tjabcs.gob.mx` | `consulta123` | Modo solo lectura: Dashboard analítico, reportes estadísticos, vista de expedientes (bloqueada la edición y administración de roles). |
+| **Administrador General** | `admin@tjabcs.gob.mx` | `password123` o `admin123` | Control total, gestión de roles y permisos granulares, suplantación de identidad ("Ver como"), configuración global. |
+| **Secretario de Acuerdos** | `secretario1@tjabcs.gob.mx` | `password123` o `secretario123` | Creación y edición de expedientes, cambio de estatus procesales, carga de notas y acuerdos. |
+| **Magistrado / Sala** | `magistrado1@tjabcs.gob.mx` | `password123` | Consulta de expedientes de su sala, agenda judicial de audiencias. |
+| **Consulta / Dirección** | `consulta@tjabcs.gob.mx` | `password123` o `consulta123` | Modo solo lectura: Dashboard analítico, reportes estadísticos, vista de expedientes (bloqueada la edición y administración de roles). |
+
+> [!NOTE]
+> - **URL de la Aplicación (Frontend)**: Es donde los usuarios interactúan visualmente (ej. `https://tja-bcs-frontend.onrender.com`).
+> - **URL de la API (Backend)**: Al abrir directamente `https://tja-bcs-backend.onrender.com/` en un navegador, mostrará un JSON de diagnóstico `{ "status": "online", "servicio": "API del Tribunal..." }` confirmando que la API está viva.
+> - **Primer Inicio (Cold Start en Render)**: En el plan gratuito de Render, los servidores se suspenden tras 15 minutos sin uso. La primera petición puede tardar entre 30 y 45 segundos en despertar. Las peticiones subsecuentes responderán de inmediato.
 
 ---
 

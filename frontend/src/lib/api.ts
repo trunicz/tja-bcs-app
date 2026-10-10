@@ -13,11 +13,25 @@
 
 import { getToken, clearSession } from './auth';
 
-// Backend Base URL configuration
-export const API_BASE_URL =
+function normalizeBaseUrl(url?: string): string {
+  if (!url) return 'http://localhost:3001';
+  const trimmed = url.trim().replace(/\/+$/, '');
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('localhost') || trimmed.startsWith('127.0.0.1')) {
+    return `http://${trimmed}`;
+  }
+  return `https://${trimmed}`;
+}
+
+const rawBaseUrl =
   import.meta.env?.PUBLIC_API_URL ||
   (typeof process !== 'undefined' && (process.env?.API_URL || process.env?.PUBLIC_API_URL)) ||
   'http://localhost:3001';
+
+// Backend Base URL configuration
+export const API_BASE_URL = normalizeBaseUrl(rawBaseUrl);
 
 /**
  * Custom error class capturing HTTP status code and server error payload
